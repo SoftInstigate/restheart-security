@@ -1,6 +1,6 @@
 # archived
 
-On 6/3/2020 we decided to use a mono repo to manage all restheart code. restheart-common has been merged in [restheart](https://github.com/SoftInstigate/restheart) and archived.
+On 6/3/2020 we decided to use a mono repo to manage all restheart code. restheart-security has been merged in [restheart](https://github.com/SoftInstigate/restheart) and archived.
 
 # RESTHeart Security
 
