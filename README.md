@@ -1,3 +1,7 @@
+# archived
+
+On 6/3/2020 we decided to use a mono repo to manage all restheart code. restheart-common has been merged in [restheart](https://github.com/SoftInstigate/restheart) and archived.
+
 # RESTHeart Security
 
 [![Build Status](https://travis-ci.org/SoftInstigate/restheart-security.svg?branch=master)](https://travis-ci.org/SoftInstigate/restheart-security)
