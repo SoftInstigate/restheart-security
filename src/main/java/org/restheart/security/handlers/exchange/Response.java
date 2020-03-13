@@ -107,7 +107,7 @@ public abstract class Response<T> extends AbstractExchange<T> {
      */
     public boolean isInError() {
         return getWrapped().getAttachment(IN_ERROR_KEY) != null
-                && getWrapped().getAttachment(IN_ERROR_KEY);
+                && (boolean) getWrapped().getAttachment(IN_ERROR_KEY);
         
     }
 
