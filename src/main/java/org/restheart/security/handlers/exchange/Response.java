@@ -23,13 +23,17 @@ import io.undertow.server.HttpServerExchange;
 import io.undertow.util.AttachmentKey;
 import io.undertow.util.Headers;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  *
  * @author Andrea Di Cesare {@literal <andrea@softinstigate.com>}
+ * @param <T>
  */
 public abstract class Response<T> extends AbstractExchange<T> {
-
+    public static final AttachmentKey<Map<String, String>> MDC_CONTEXT_KEY
+            = AttachmentKey.create(Map.class);
+    
     private static final AttachmentKey<Integer> STATUS_CODE
             = AttachmentKey.create(Integer.class);
     public static final AttachmentKey<PooledByteBuffer[]> BUFFERED_RESPONSE_DATA
@@ -112,6 +116,14 @@ public abstract class Response<T> extends AbstractExchange<T> {
      */
     public void setInError(boolean inError) {
         getWrapped().putAttachment(IN_ERROR_KEY, inError);
+    }
+    
+    public Map<String, String> getMDCContext() {
+        return getWrapped().getAttachment(MDC_CONTEXT_KEY);
+    } 
+    
+    public void setMDCContext(Map<String, String> mdcCtx) {
+        getWrapped().putAttachment(MDC_CONTEXT_KEY, mdcCtx);
     }
 
     /**

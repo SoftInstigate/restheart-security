@@ -27,8 +27,10 @@ import io.undertow.util.ConduitFactory;
 import io.undertow.util.HeaderMap;
 import io.undertow.util.Headers;
 import org.restheart.security.handlers.ResponseInterceptorsStreamSinkConduit;
+import org.restheart.security.handlers.exchange.ByteArrayResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.xnio.conduits.StreamSinkConduit;
 
 /**
@@ -60,7 +62,7 @@ public class ConduitInjector extends PipedHttpHandler {
     }
 
     /**
-     * 
+     *
      */
     public ConduitInjector() {
         super();
@@ -80,6 +82,17 @@ public class ConduitInjector extends PipedHttpHandler {
             public StreamSinkConduit wrap(
                     ConduitFactory<StreamSinkConduit> factory,
                     HttpServerExchange exchange) {
+
+                // restore MDC context
+                // MDC context is put in the thread context
+                // For proxied requests a thread switch in the request handling happens,
+                // loosing the MDC context. TracingInstrumentationHandler adds it to the
+                // exchange as an Attachment
+                var mdcCtx = ByteArrayResponse.wrap(exchange).getMDCContext();
+                if (mdcCtx != null) {
+                    MDC.setContextMap(mdcCtx);
+                }
+
                 if (PluginsRegistry.getInstance()
                         .getResponseInterceptors()
                         .stream()

@@ -8,6 +8,7 @@ import io.undertow.server.HttpServerExchange;
 import io.undertow.util.HttpString;
 import org.restheart.security.Bootstrapper;
 import org.restheart.security.handlers.PipedHttpHandler;
+import org.restheart.security.handlers.exchange.ByteArrayResponse;
 
 /**
  * Handler to write tracing headers to the logging MDC. Pick it up via the
@@ -30,6 +31,8 @@ public class TracingInstrumentationHandler extends PipedHttpHandler {
                             .flatMap(x -> Optional.ofNullable(x.peekFirst()))
                             .ifPresent(value -> {
                                 MDC.put(traceIdHeader, value);
+                                ByteArrayResponse.wrap(exchange)
+                                        .setMDCContext(MDC.getCopyOfContextMap());
                                 exchange.getResponseHeaders()
                                         .put(HttpString
                                                 .tryFromString(traceIdHeader),
